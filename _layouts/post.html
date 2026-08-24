@@ -1,0 +1,22 @@
+---
+layout: default
+---
+
+<div class="links-container" style="margin: 40px 0 0 0;">
+  <a href="{{ '/' | relative_url }}">andy</a><span class="separator">|</span>
+  <a href="{{ '/blog/' | relative_url }}">blog</a>
+</div>
+
+<hr>
+<h2>{{ page.title }}</h2>
+{% if page.subtitle %}<p class="quiet">{{ page.subtitle }}</p>{% endif %}
+<p class="quiet" style="font-size:15px;">{{ page.date | date: "%b %-d, %Y" }}</p>
+
+<div class="post-body">
+  {{ content }}
+</div>
+
+<hr>
+<footer class="quiet">
+  <a href="{{ '/blog/' | relative_url }}">&larr; back to blog</a>
+</footer>

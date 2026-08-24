@@ -1,0 +1,29 @@
+---
+layout: default
+title: blog
+permalink: /blog/
+---
+
+<div class="links-container" style="margin: 40px 0 0 0;">
+  <a href="{{ '/' | relative_url }}">andy</a><span class="separator">|</span>
+  <a href="{{ '/#projects' | relative_url }}">projects</a><span class="separator">|</span>
+  <a href="{{ '/feed.xml' | relative_url }}">rss</a>
+</div>
+
+<hr>
+<h2>blog</h2>
+
+<ul class="postlist">
+  {% for post in site.posts %}
+  <li>
+    <a href="{{ post.url | relative_url }}"><b>{{ post.title }}</b></a>
+    <span class="date">— {{ post.date | date: "%b %-d, %Y" }}</span>
+    {% if post.subtitle %}<div class="sub quiet">{{ post.subtitle }}</div>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+
+<hr>
+<footer class="quiet">
+  <a href="{{ '/' | relative_url }}">&larr; home</a>
+</footer>

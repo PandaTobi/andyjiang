@@ -1,0 +1,59 @@
+---
+layout: default
+---
+
+<div class="landing">
+  <div class="svg-container">
+    {% include logo.html %}
+  </div>
+  <div class="links-container">
+    <a href="#about">about</a><span class="separator">|</span>
+    <a href="#projects">projects</a><span class="separator">|</span>
+    <a href="#blog">blog</a><span class="separator">|</span>
+    <a href="#contact">contact</a>
+  </div>
+</div>
+
+<hr>
+<h2 id="about">andy jiang</h2>
+<p>I'm a computer science student at <a href="https://www.cs.purdue.edu/">Purdue</a>.</p>
+
+<p>I build small things that are sometimes useful.
+  What I've shipped so far is below.</p>
+
+<hr>
+<h2 id="projects">projects</h2>
+
+<p><a href="https://mindscapesear.ch/"><b>Mindscape Search</b></a><br/>
+  Semantic search for Sean Carroll's Mindscape AMA questions.</p>
+
+<p><a href="https://www.pr1sm.app/"><b>Prism</b></a> <span style="color:var(--accent)">(not being maintained)</span><br/>
+  A macOS agent harness that reads your system/behavior and does stuff for you.</p>
+
+<hr>
+<h2 id="blog">blog</h2>
+
+<ul class="postlist">
+  {% for post in site.posts limit: 5 %}
+  <li>
+    <a href="{{ post.url | relative_url }}"><b>{{ post.title }}</b></a>
+    <span class="date">— {{ post.date | date: "%b %-d, %Y" }}</span>
+    {% if post.subtitle %}<div class="sub quiet">{{ post.subtitle }}</div>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+
+{% if site.posts.size > 5 %}<p><a href="{{ '/blog/' | relative_url }}">all posts &rarr;</a></p>{% endif %}
+
+<hr>
+<h2 id="contact">contact</h2>
+<p>
+  <a href="mailto:{{ site.email }}">{{ site.email }}</a><span class="separator"> | </span>
+  <a href="https://github.com/{{ site.github }}">github</a><span class="separator"> | </span>
+  <a href="{{ '/feed.xml' | relative_url }}">rss</a>
+</p>
+
+<hr>
+<footer class="quiet">
+  &copy; {{ 'now' | date: "%Y" }} {{ site.author }}
+</footer>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}: {{ site.description }}{% endif %}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+  {%- feed_meta -%}
+  <style>
+    :root {
+      --fg: #111;
+      --bg: white;
+      --rule: lightgrey;
+      --cell: #dddddd;
+      --quiet: #777;
+      --accent: darkorange;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fg: #e8e8e8;
+        --bg: #111;
+        --rule: #333;
+        --cell: #333;
+        --quiet: #888;
+        --accent: orange;
+      }
+    }
+    body {
+      font-family: 'Lucida Console', monospace;
+      font-size: 18px;
+      color: var(--fg);
+      background-color: var(--bg);
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 50px;
+      box-sizing: border-box;
+    }
+    a { color: inherit; }
+    .landing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh; min-height: 100dvh;
+      text-align: center;
+    }
+    svg { width: 100%; height: auto; }
+    .svg-container { width: 100%; max-width: 400px; display: inline-block; }
+    .separator { letter-spacing: -9px; }
+    hr { border: none; height: 2px; background-color: var(--rule); width: 100%; margin: 30px auto; }
+    table { border-collapse: collapse; text-align: left; width: 100%; }
+    td, th { padding: 5px 20px; border: 1px solid var(--cell); }
+    th { text-align: left; font-weight: normal; font-style: italic; }
+    .quiet { color: var(--quiet); }
+    .links-container { font-size: 24px; margin: 20px; }
+    .links-container a { text-decoration: none; margin: 0 10px; }
+    .postlist { list-style: none; padding: 0; }
+    .postlist li { margin-bottom: 2em; }
+    .postlist .date { color: var(--quiet); font-size: 15px; }
+    .postlist .sub { margin-top: 0.25em; }
+    h1, h2 { font-weight: normal; }
+    h2 { font-size: 28px; }
+    .post-body { max-width: 800px; }
+    .post-body img { max-width: 100%; height: auto; }
+    pre, code { font-family: 'Lucida Console', monospace; font-size: 15px; }
+    pre { overflow-x: auto; border: 1px solid var(--cell); padding: 12px; }
+    blockquote { margin-left: 0; padding-left: 20px; border-left: 2px solid var(--cell); font-style: italic; }
+    footer { margin: 40px 0; font-size: 15px; }
+    @media (max-width: 600px) {
+      body { padding: 0 20px; font-size: 16px; }
+      .links-container { font-size: 18px; }
+      .links-container a { margin: 0 4px; }
+    }
+  </style>
+</head>
+<body>
+{{ content }}
+</body>
+</html>

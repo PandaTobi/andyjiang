@@ -1,0 +1,19 @@
+title: andy jiang
+description: CS student at Purdue. Projects, writing, and other things.
+author: Andy Jiang
+email: andyjiang1641@gmail.com
+github: PandaTobi
+url: ""
+baseurl: ""
+
+markdown: kramdown
+permalink: /blog/:title/
+
+plugins:
+  - jekyll-feed
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
