@@ -1,0 +1,252 @@
+.flt-shell {
+  --course-border: var(--rule);
+  --course-soft: #f5f5f5;
+  --course-warn: #a1261c;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+.skip-link {
+  position: fixed;
+  top: -10rem;
+  left: 1rem;
+  z-index: 100;
+  padding: .5rem;
+  color: #111;
+  background: var(--accent);
+}
+
+.skip-link:focus { top: 1rem; }
+
+.course-header {
+  padding: 30px 0 0;
+}
+
+.course-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.text-button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  background: none;
+  cursor: pointer;
+}
+
+#course-view { outline: none; }
+
+.course-intro {
+  padding-top: 3rem;
+}
+
+.course-intro h1,
+.lesson-hero h1,
+.quiz-heading h1 {
+  margin: 0 0 1rem;
+  font-size: 28px;
+  font-weight: normal;
+  line-height: 1.25;
+}
+
+.course-intro p,
+.lesson-intro {
+  max-width: 760px;
+  line-height: 1.65;
+}
+
+.quiet,
+.meta { color: var(--quiet); }
+.meta { font-size: 15px; }
+
+.progress-line {
+  width: 100%;
+  height: 6px;
+  margin: .75rem 0 1rem;
+  border: 0;
+  background: var(--course-border);
+}
+
+.progress-line::-webkit-progress-bar { background: var(--course-border); }
+.progress-line::-webkit-progress-value { background: var(--accent); }
+.progress-line::-moz-progress-bar { background: var(--accent); }
+
+.course-source {
+  margin: 1rem 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.chapter-section { margin: 2rem 0; }
+.chapter-section h2 { margin-bottom: .35rem; }
+.chapter-section > p { margin-top: 0; }
+
+.unit-list {
+  margin: 1.25rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.unit-row { margin: 0 0 1rem; }
+.unit-status { display: inline-block; width: 1.4rem; color: var(--quiet); }
+.unit-row.is-complete .unit-status { color: var(--fg); }
+.unit-score { color: var(--quiet); font-size: 14px; }
+.test-link { margin-top: 1rem; }
+
+.button {
+  appearance: none;
+  display: inline;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  background: none;
+  cursor: pointer;
+}
+
+.button-primary { font-weight: bold; }
+.button-danger, .give-up { color: var(--course-warn); }
+.button[disabled] { color: var(--quiet); cursor: not-allowed; }
+
+.link-row,
+.lesson-actions,
+.question-actions,
+.result-actions,
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.lesson-wrap,
+.quiz-wrap { max-width: 800px; }
+
+.lesson-hero,
+.quiz-heading { padding-top: 3rem; }
+.breadcrumb { margin: 0 0 2rem; color: var(--quiet); font-size: 15px; }
+.breadcrumb span, .breadcrumb a { margin-right: .5rem; }
+
+.lesson-section {
+  margin: 2rem 0;
+}
+
+.lesson-section h2 { margin-bottom: .75rem; }
+.lesson-section p,
+.lesson-section li { line-height: 1.75; }
+.lesson-section ul { padding-left: 1.4rem; }
+
+.math-panel { line-height: 1.7; }
+.lesson-actions { margin: 2rem 0; }
+
+.quiz-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--quiet);
+  font-size: 15px;
+}
+
+.question-card { margin-top: 2rem; }
+.question-count { color: var(--quiet); font-size: 15px; }
+.question-prompt { margin: 1.5rem 0; font-size: 20px; line-height: 1.6; }
+
+.answer-list { display: grid; gap: 1rem; }
+.answer-option { display: grid; grid-template-columns: 1.2rem minmax(0, 1fr); gap: .55rem; align-items: start; cursor: pointer; line-height: 1.5; }
+.answer-option input { width: 1rem; height: 1rem; margin-top: .2rem; accent-color: var(--fg); }
+
+.answer-input {
+  width: min(100%, 420px);
+  box-sizing: border-box;
+  padding: .6rem;
+  border: 1px solid var(--fg);
+  border-radius: 0;
+  color: var(--fg);
+  font: inherit;
+  background: var(--bg);
+}
+
+.answer-input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.question-actions { margin-top: 1.75rem; }
+.question-actions .button-primary { margin-left: auto; }
+
+.feedback-card {
+  margin: 1.75rem 0 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--course-border);
+  line-height: 1.65;
+}
+
+.feedback-card.is-correct { border-color: var(--accent); }
+.feedback-card.is-wrong { border-color: var(--course-warn); }
+.feedback-card h3 { margin: 0 0 .5rem; font-size: 18px; }
+.solution-steps { padding-left: 1.5rem; }
+.solution-steps li { margin: .5rem 0; }
+
+.result-card { margin-top: 2rem; }
+.result-score { margin: 1rem 0; font-size: 42px; }
+.result-stats { margin: 1rem 0 2rem; }
+.result-stats div { display: inline; margin-right: 1.25rem; }
+.result-stats strong { margin-right: .35rem; }
+
+.course-dialog {
+  width: min(680px, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  box-sizing: border-box;
+  padding: 1.5rem;
+  overflow-y: auto;
+  border: 2px solid var(--fg);
+  border-radius: 0;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+.course-dialog::backdrop { background: rgb(0 0 0 / .55); }
+.course-dialog h2 { margin-top: 0; font-size: 24px; font-weight: normal; }
+.dialog-close { float: right; border: 0; color: inherit; font: inherit; font-size: 24px; background: none; cursor: pointer; }
+.dialog-footer { margin-top: 1rem; }
+.source-link { display: block; margin: 1rem 0; }
+.source-link small { display: block; margin-top: .3rem; color: var(--quiet); }
+
+.help-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 1rem 0;
+  border: 1px solid var(--course-border);
+}
+
+.notice {
+  margin: 1rem 0;
+  color: var(--course-warn);
+  font-size: 15px;
+}
+
+.loading-card { margin: 4rem 0; }
+
+@media (prefers-color-scheme: dark) {
+  .flt-shell { --course-soft: #181818; --course-warn: #ff8176; }
+}
+
+@media (max-width: 600px) {
+  .flt-shell { max-width: none; }
+  .course-header { padding-top: 20px; }
+  .course-intro, .lesson-hero, .quiz-heading { padding-top: 2rem; }
+  .quiz-topline { align-items: flex-start; }
+  .question-actions { align-items: flex-start; }
+  .question-actions .button-primary { margin-left: 0; }
+  .result-stats div { display: block; margin: .5rem 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

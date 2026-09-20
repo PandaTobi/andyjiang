@@ -10,4 +10,4 @@ This isn't elitist perjorative. The default metric for the severity of problems 
 
 What are we but cogitators?
 
-All of the steps that the collective took to get here are understandable; I'd argue directly that this is the problem at hand. Each rung of this bureaucratic ladder is installed because it came with the least resistance possible, but when did we become so lazy? Why is it intelligent to be complacent? 
+All of the steps that the collective took to get here are understandable; I'd argue that this is directly the problem. Each rung of this bureaucratic ladder was installed because it had the least resistance, but when will it end? Why is it intelligent to be complacent? 
