@@ -11,6 +11,12 @@ bundle exec jekyll serve
 
 Then open http://localhost:4000.
 
+Run the dependency-free Swiss tournament engine tests with:
+
+```
+npm test
+```
+
 ## add a blog post
 
 Drop a markdown file in `_posts/` named `YYYY-MM-DD-slug.md`:
@@ -32,6 +38,10 @@ That's it — it shows up on the home page and at `/blog/`, and the URL is `/blo
 ```
 index.html              landing + about + projects + blog + contact
 blog.html               full post list at /blog/
+swiss/index.html        Swiss chess tournament manager
+assets/js/swiss-engine.mjs  deterministic pairing and tournament engine
+assets/js/swiss-app.mjs     browser UI and local persistence
+tests/                  dependency-free Node tests
 _posts/                 blog posts
 _layouts/default.html   shell + all the CSS
 _layouts/post.html      single post page

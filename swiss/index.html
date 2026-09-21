@@ -1,0 +1,42 @@
+---
+layout: default
+title: Swiss chess tournament manager
+description: A deterministic, browser-based Swiss-system chess tournament manager.
+permalink: /swiss/
+---
+
+<link rel="stylesheet" href="{{ '/assets/css/swiss.css' | relative_url }}">
+
+<a class="swiss-skip" href="#swiss-view">skip to tournament</a>
+<main id="swiss-app" class="swiss-shell">
+  <header class="swiss-header">
+    <nav class="swiss-site-nav" aria-label="Site navigation">
+      <a href="{{ '/' | relative_url }}">andy</a>
+      <span class="separator"> | </span>
+      <a href="{{ '/swiss/' | relative_url }}">swiss</a>
+      <span class="separator"> | </span>
+      <button class="swiss-link-button" type="button" data-action="new-tournament">new tournament</button>
+    </nav>
+  </header>
+
+  <p id="swiss-notice" class="swiss-notice" role="status" aria-live="polite"></p>
+  <div id="swiss-view" tabindex="-1">
+    <p class="swiss-loading" aria-busy="true">loading tournament…</p>
+  </div>
+
+  <dialog id="swiss-confirm" class="swiss-dialog" aria-labelledby="confirm-title">
+    <div>
+      <button class="swiss-dialog-close" type="button" data-confirm-choice="cancel" aria-label="Close">×</button>
+      <h2 id="confirm-title">Confirm action</h2>
+      <p id="confirm-message"></p>
+      <div class="swiss-dialog-actions">
+        <button class="swiss-button" type="button" data-confirm-choice="cancel">cancel</button>
+        <button class="swiss-button swiss-danger" type="button" id="confirm-submit" data-confirm-choice="confirm">confirm</button>
+      </div>
+    </div>
+  </dialog>
+
+  <noscript><p class="swiss-error">This tournament manager needs JavaScript enabled.</p></noscript>
+</main>
+
+<script type="module" src="{{ '/assets/js/swiss-app.mjs' | relative_url }}"></script>
