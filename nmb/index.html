@@ -1,0 +1,70 @@
+---
+layout: default
+title: NMB barcode generator
+description: Generate and export six-digit Code 39 barcodes in your browser.
+permalink: /nmb/
+---
+
+<link rel="stylesheet" href="{{ '/assets/css/nmb.css' | relative_url }}">
+
+<main class="nmb-shell">
+  <header class="nmb-header">
+    <nav class="nmb-nav" aria-label="Site navigation">
+      <a href="{{ '/' | relative_url }}">andy</a>
+      <span class="separator" aria-hidden="true"> | </span>
+      <span aria-current="page">nmb</span>
+    </nav>
+  </header>
+
+  <section class="nmb-intro" aria-labelledby="nmb-title">
+    <p class="nmb-kicker">Code 39 / Code 3 of 9</p>
+    <h1 id="nmb-title">barcode generator</h1>
+    <p>Generate a barcode from exactly six digits. Everything stays in your browser.</p>
+  </section>
+
+  <form id="nmb-form" class="nmb-form" novalidate>
+    <div class="nmb-field">
+      <label for="nmb-value">six-digit number</label>
+      <input
+        id="nmb-value"
+        class="nmb-input"
+        name="number"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        pattern="[0-9]{6}"
+        aria-describedby="nmb-help nmb-error"
+        placeholder="115834"
+      >
+      <span id="nmb-help" class="nmb-help">000000–999999</span>
+      <span id="nmb-error" class="nmb-error" aria-live="polite"></span>
+    </div>
+    <button class="nmb-button nmb-generate" type="submit">generate</button>
+  </form>
+
+  <section class="nmb-output" aria-labelledby="nmb-preview-title">
+    <div class="nmb-output-heading">
+      <h2 id="nmb-preview-title">preview</h2>
+      <span class="nmb-spec">0.4 mm module / 25 mm bar</span>
+    </div>
+
+    <div id="nmb-preview" class="nmb-preview" aria-live="polite">
+      <p class="nmb-placeholder">enter six digits to generate a barcode</p>
+    </div>
+
+    <div class="nmb-actions" aria-label="Barcode export options">
+      <button id="nmb-copy" class="nmb-button" type="button" disabled>copy image</button>
+      <button class="nmb-button" type="button" data-download="png" disabled>download PNG</button>
+      <button class="nmb-button" type="button" data-download="svg" disabled>download SVG</button>
+      <button class="nmb-button" type="button" data-download="pdf" disabled>download PDF</button>
+    </div>
+    <p id="nmb-status" class="nmb-status" role="status" aria-live="polite"></p>
+    <p id="nmb-clipboard-note" class="nmb-clipboard-note" hidden>Image copying is not supported in this browser. Use the PNG download instead.</p>
+  </section>
+
+  <noscript><p class="nmb-error">This generator needs JavaScript enabled.</p></noscript>
+</main>
+
+<script type="module" src="{{ '/assets/js/nmb-app.mjs' | relative_url }}"></script>

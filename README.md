@@ -39,8 +39,10 @@ That's it — it shows up on the home page and at `/blog/`, and the URL is `/blo
 index.html              landing + about + projects + blog + contact
 blog.html               full post list at /blog/
 swiss/index.html        Swiss chess tournament manager
+nmb/index.html          six-digit Code 39 barcode generator
 assets/js/swiss-engine.mjs  deterministic pairing and tournament engine
 assets/js/swiss-app.mjs     browser UI and local persistence
+assets/js/nmb-barcode.mjs   dependency-free Code 39 encoding and exports
 tests/                  dependency-free Node tests
 _posts/                 blog posts
 _layouts/default.html   shell + all the CSS
