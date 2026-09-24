@@ -4,6 +4,8 @@ import {
   createTournament,
   addPlayer,
   updatePlayer,
+  setPlayerScore,
+  updatePairing,
   removePlayer,
   seedPlayers,
   startTournament,
@@ -16,7 +18,8 @@ import {
   activeTiebreakPhases,
   recordTiebreakResult,
   advanceTiebreaks,
-  getPodium
+  getPodium,
+  standingsCsv
 } from "../assets/js/swiss-engine.mjs";
 
 function tournament() {
@@ -326,4 +329,66 @@ test("multiple rounds maintain complete snapshots and scoring history", () => {
   assert.ok(state.rounds.every((entry) => entry.status === "complete" && entry.standings.length === 7));
   const totalScore = calculateStandings(state).reduce((sum, entry) => sum + entry.score, 0);
   assert.equal(totalScore, 16); // Four rounds × (three games + one bye).
+});
+
+test("player names, ratings, and corrected scores remain editable after starting", () => {
+  const state = tournament();
+  addField(state, ["A", "B", "C", "D"]);
+  startTournament(state);
+  const player = state.players[0];
+  updatePlayer(state, player.id, { name: "A Prime", rating: 2050 });
+  setPlayerScore(state, player.id, 2.5);
+  assert.equal(player.name, "A Prime");
+  assert.equal(player.rating, 2050);
+  assert.equal(calculateStandings(state).find((entry) => entry.playerId === player.id).score, 2.5);
+
+  currentRound(state).pairings.filter((pairing) => pairing.blackId !== null).forEach((pairing) => {
+    const result = pairing.whiteId === player.id ? "1-0" : pairing.blackId === player.id ? "0-1" : "0.5-0.5";
+    recordResult(state, pairing.id, result);
+  });
+  assert.equal(calculateStandings(state).find((entry) => entry.playerId === player.id).score, 3.5);
+});
+
+test("pairings can be manually reassigned while preserving round validity", () => {
+  const state = tournament();
+  addField(state, ["A", "B", "C", "D"]);
+  startTournament(state);
+  const [first, second] = currentRound(state).pairings;
+  const originalFirstBlack = first.blackId;
+  const originalSecondBlack = second.blackId;
+  updatePairing(state, currentRound(state).id, first.id, { whiteId: first.whiteId, blackId: originalSecondBlack, result: "1-0" });
+  const assigned = currentRound(state).pairings.flatMap((pairing) => [pairing.whiteId, pairing.blackId]);
+  assert.equal(new Set(assigned).size, 4);
+  assert.ok([second.whiteId, second.blackId].includes(originalFirstBlack));
+  assert.equal(calculateStandings(state)[0].score, 1);
+});
+
+test("historical pairing and score edits rebuild final podium state", () => {
+  const state = tournament();
+  addField(state, ["A", "B", "C", "D"]);
+  startTournament(state);
+  resultAll(state);
+  endTournament(state);
+  assert.equal(state.status, "tiebreak");
+  updatePlayer(state, state.players[0].id, { name: "A Renamed", rating: 2222 });
+  assert.equal(state.rounds[0].standings.find((entry) => entry.playerId === state.players[0].id).name, "A Renamed");
+  setPlayerScore(state, state.players[0].id, 5);
+  assert.equal(getPodium(state)[0].player.playerId, state.players[0].id);
+  const game = state.rounds[0].pairings[0];
+  updatePairing(state, state.rounds[0].id, game.id, { whiteId: game.blackId, blackId: game.whiteId, result: "1-0" });
+  assert.ok(["tiebreak", "complete"].includes(state.status));
+  assert.equal(state.rounds[0].standings.length, 4);
+});
+
+test("standings CSV quotes names and includes final podium places", () => {
+  const state = tournament();
+  addField(state, [{ name: "Doe, Jane", rating: 1800 }, { name: "Other", rating: "" }]);
+  startTournament(state);
+  const game = currentRound(state).pairings[0];
+  recordResult(state, game.id, game.whiteId === state.players[0].id ? "1-0" : "0-1");
+  endTournament(state);
+  const csv = standingsCsv(state);
+  assert.match(csv, /"Doe, Jane"/);
+  assert.match(csv, /Podium Place/);
+  assert.match(csv, /Doe, Jane",1800,1,1,0,0,0,1,Active,1/);
 });

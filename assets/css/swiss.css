@@ -100,6 +100,8 @@
 }
 .swiss-title-row p { margin: .25rem 0; }
 .swiss-title-facts { flex: 0 0 auto; text-align: right; color: var(--quiet); font-size: 14px; line-height: 1.6; }
+.swiss-edit-toggle { margin-bottom: .45rem; color: var(--fg); font-weight: bold; }
+.swiss-edit-banner { margin: -1rem 0 1.5rem; padding: .75rem 1rem; border-left: 3px solid var(--accent); font-size: 14px; }
 .swiss-tabs { gap: 1.25rem; padding: 0 0 1rem; border-bottom: 2px solid var(--rule); }
 
 .swiss-section { margin: 2.25rem 0; }
@@ -131,8 +133,14 @@
   border-bottom: 1px solid var(--cell);
 }
 .pairing-board { color: var(--quiet); font-size: 14px; }
-.pairing-player { min-width: 0; }
-.pairing-player.black { text-align: right; }
+.pairing-player { min-width: 0; padding: .65rem .75rem; border: 1px solid var(--cell); }
+.pairing-player.white { color: #111; background: #fff; border-color: #aaa; }
+.pairing-player.black { color: #fff; background: #111; border-color: #111; text-align: right; }
+.pairing-player.white .pairing-rating,
+.pairing-player.white .swiss-tag { color: #555; }
+.pairing-player.black .pairing-rating,
+.pairing-player.black .swiss-tag { color: #bbb; }
+.pairing-player.player { padding: 0; border: 0; }
 .pairing-name { overflow-wrap: anywhere; }
 .pairing-rating, .pairing-status { color: var(--quiet); font-size: 13px; }
 .pairing-versus { color: var(--quiet); font-size: 13px; }
@@ -151,6 +159,17 @@
 .result-choice input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 .bye-row { grid-template-columns: 4rem minmax(0, 1fr) auto; }
 .bye-mark { color: var(--quiet); text-align: right; }
+.pairing-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(9rem, .55fr) auto;
+  gap: .75rem;
+  align-items: end;
+  padding: .85rem;
+  border-right: 1px solid var(--cell);
+  border-bottom: 1px solid var(--cell);
+  border-left: 1px solid var(--cell);
+  background: var(--swiss-soft);
+}
 
 .swiss-table-wrap { width: 100%; overflow-x: auto; }
 .swiss-table { min-width: 820px; font-size: 15px; }
@@ -163,7 +182,7 @@
 
 .player-editor {
   display: grid;
-  grid-template-columns: minmax(12rem, 1fr) minmax(8rem, .45fr) auto;
+  grid-template-columns: minmax(12rem, 1fr) minmax(8rem, .45fr) minmax(6rem, .3fr) auto;
   gap: .75rem;
   align-items: end;
   padding: .85rem 0;
@@ -222,6 +241,7 @@
   .swiss-title-facts { margin-top: .75rem; text-align: left; }
   .pairing-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto minmax(0, 1fr); gap: .55rem; }
   .pairing-result { grid-column: 2 / -1; justify-content: flex-start; }
+  .pairing-editor { grid-template-columns: 1fr 1fr; }
   .bye-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
   .player-static { grid-template-columns: 3rem minmax(0, 1fr) auto; }
   .player-static > :nth-child(3) { display: none; }
@@ -232,7 +252,7 @@
 @media (max-width: 560px) {
   .swiss-header { padding-top: 20px; }
   .swiss-intro { padding-top: 2rem; }
-  .swiss-form-grid, .player-editor { grid-template-columns: 1fr; }
+  .swiss-form-grid, .player-editor, .pairing-editor { grid-template-columns: 1fr; }
   .swiss-field-wide { grid-column: auto; }
   .swiss-section-heading { display: block; }
   .history-game { grid-template-columns: 2rem minmax(0, 1fr) 4rem minmax(0, 1fr); gap: .5rem; }

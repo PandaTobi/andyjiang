@@ -74,6 +74,7 @@ export function addPlayer(state, input) {
     lateEntry: started,
     entryRound: started ? (current ? current.number + 1 : state.rounds.length + 1) : 1,
     withdrawnAfterRound: null,
+    scoreAdjustment: 0,
     createdOrder: state.players.length + 1
   };
   state.players.push(entry);
@@ -81,7 +82,6 @@ export function addPlayer(state, input) {
 }
 
 export function updatePlayer(state, playerId, input) {
-  assert(state.status === "setup", "Players can only be edited before the tournament starts.");
   const player = state.players.find((entry) => entry.id === playerId);
   assert(player, "Player not found.");
   const update = validatePlayerInput(input);
@@ -89,6 +89,7 @@ export function updatePlayer(state, playerId, input) {
   assert(!duplicate, "A player with that name is already in the tournament.");
   player.name = update.name;
   player.rating = update.rating;
+  refreshRoundSnapshots(state);
   return player;
 }
 
@@ -145,7 +146,7 @@ function blankStats(player) {
     name: player.name,
     rating: player.rating,
     seed: player.seed,
-    score: 0,
+    score: Number(player.scoreAdjustment) || 0,
     wins: 0,
     draws: 0,
     losses: 0,
@@ -369,6 +370,72 @@ function snapshotStandings(state, roundNumber) {
   }));
 }
 
+function refreshRoundSnapshots(state) {
+  state.rounds.forEach((round) => {
+    if (round.status === "complete") round.standings = snapshotStandings(state, round.number);
+  });
+}
+
+function rebuildFinalStage(state) {
+  if (state.status !== "tiebreak" && state.status !== "complete") return;
+  state.completedAt = null;
+  prepareTiebreaks(state);
+}
+
+export function setPlayerScore(state, playerId, value) {
+  const player = state.players.find((entry) => entry.id === playerId);
+  assert(player, "Player not found.");
+  const desired = Number(value);
+  assert(Number.isFinite(desired) && desired >= 0 && Number.isInteger(desired * 2), "Score must be zero or a non-negative half-point value.");
+  const current = calculateStandings(state).find((entry) => entry.playerId === playerId).score;
+  player.scoreAdjustment = (Number(player.scoreAdjustment) || 0) + desired - current;
+  refreshRoundSnapshots(state);
+  rebuildFinalStage(state);
+  return player;
+}
+
+export function updatePairing(state, roundId, pairingId, input) {
+  const round = state.rounds.find((entry) => entry.id === roundId);
+  assert(round, "Round not found.");
+  const pairing = round.pairings.find((entry) => entry.id === pairingId);
+  assert(pairing, "Pairing not found.");
+  const white = state.players.find((player) => player.id === input.whiteId);
+  const black = input.blackId ? state.players.find((player) => player.id === input.blackId) : null;
+  assert(white, "Choose a White player.");
+  assert(!input.blackId || black, "Choose a valid Black player or Bye.");
+  assert(!black || black.id !== white.id, "A player cannot play both colors in one game.");
+
+  const selectedIds = [white.id].concat(black ? [black.id] : []);
+  const previousIds = [pairing.whiteId, pairing.blackId].filter(Boolean);
+  const replacements = previousIds.filter((id) => !selectedIds.includes(id));
+  selectedIds.forEach((selectedId) => {
+    const other = round.pairings.find((entry) => entry.id !== pairing.id && (entry.whiteId === selectedId || entry.blackId === selectedId));
+    if (!other) return;
+    const replacement = replacements.shift();
+    assert(replacement, "That reassignment would duplicate a player in this round.");
+    if (other.whiteId === selectedId) other.whiteId = replacement;
+    else other.blackId = replacement;
+  });
+
+  pairing.whiteId = white.id;
+  pairing.blackId = black ? black.id : null;
+  if (!black) {
+    pairing.board = null;
+    pairing.result = "bye";
+  } else {
+    if (pairing.board === null) {
+      const usedBoards = round.pairings.map((entry) => entry.board || 0);
+      pairing.board = Math.max(0, ...usedBoards) + 1;
+    }
+    assert(RESULT_OPTIONS.includes(input.result) || (round.status === "active" && !input.result), "Choose a valid result for this completed game.");
+    pairing.result = input.result || null;
+  }
+
+  refreshRoundSnapshots(state);
+  rebuildFinalStage(state);
+  return pairing;
+}
+
 export function finalizeRound(state) {
   const round = currentRound(state);
   assert(round, "There is no active round.");
@@ -460,6 +527,7 @@ export function prepareTiebreaks(state) {
   });
   if (state.tiebreaks.groups.length) {
     state.status = "tiebreak";
+    state.completedAt = null;
   } else {
     state.status = "complete";
     state.completedAt = new Date().toISOString();
@@ -555,4 +623,34 @@ export function playerById(state, playerId) {
 
 export function formatRating(rating) {
   return rating == null ? "Unrated" : String(rating);
+}
+
+function csvCell(value) {
+  const text = String(value == null ? "" : value);
+  return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+}
+
+export function standingsCsv(state) {
+  const podiumPlaces = new Map();
+  if (state.status === "complete") {
+    getPodium(state).forEach((entry) => {
+      if (entry.player) podiumPlaces.set(entry.player.playerId, entry.place);
+    });
+  }
+  const header = ["Rank", "Tied", "Player", "Rating", "Score", "Wins", "Draws", "Losses", "Byes", "Seed", "Status", "Podium Place"];
+  const rows = calculateStandings(state).map((entry) => [
+    entry.rank,
+    entry.tied ? "Yes" : "No",
+    entry.name,
+    formatRating(entry.rating),
+    entry.score,
+    entry.wins,
+    entry.draws,
+    entry.losses,
+    entry.byes,
+    entry.seed,
+    [entry.lateEntry ? "Late entrant" : "", entry.active ? "Active" : "Withdrawn"].filter(Boolean).join("; "),
+    podiumPlaces.get(entry.playerId) || ""
+  ]);
+  return [header].concat(rows).map((row) => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
 }

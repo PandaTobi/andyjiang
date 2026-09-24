@@ -1,0 +1,26 @@
+---
+layout: default
+title: Rest here, traveler
+description: A quiet place beside the fire.
+permalink: /rest-here-traveler/
+---
+
+<link rel="stylesheet" href="{{ '/assets/css/rest-here-traveler.css' | relative_url }}">
+
+<main class="rest-shell">
+  <div class="rest-scene">
+    <button id="rest-fire" class="rest-image-button" type="button" aria-label="Kindle the bonfire">
+      <img src="{{ '/assets/images/rest-here-traveler.gif' | relative_url }}" width="498" height="238" alt="A weary knight resting beside a bonfire">
+    </button>
+    <p class="rest-instruction">left click to kindle · right click to rest</p>
+  </div>
+
+  <div id="rest-overlay" class="rest-overlay" aria-hidden="true">
+    <p id="rest-caption" role="status" aria-live="polite"></p>
+  </div>
+
+  <div id="spark-field" class="spark-field" aria-hidden="true"></div>
+  <a class="rest-source" href="https://tenor.com/view/dark-souls-knight-rest-here-weary-rest-here-weary-one-gif-19874929" rel="noopener">source</a>
+</main>
+
+<script src="{{ '/assets/js/rest-here-traveler.js' | relative_url }}" defer></script>

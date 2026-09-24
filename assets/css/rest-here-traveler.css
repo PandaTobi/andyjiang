@@ -1,0 +1,151 @@
+html,
+body,
+button,
+a {
+  cursor: url('/assets/images/sword-cursor.svg') 3 3, crosshair;
+}
+
+body {
+  max-width: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 0;
+  overflow: hidden;
+  color: #e8e1d4;
+  background: #050403;
+}
+
+.rest-shell {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100dvh;
+  place-items: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.rest-scene {
+  width: min(92vw, 820px);
+  text-align: center;
+}
+
+.rest-image-button {
+  appearance: none;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid #31271f;
+  border-radius: 0;
+  background: #000;
+  box-shadow: 0 0 45px rgb(203 72 16 / .1);
+}
+
+.rest-image-button:focus-visible {
+  outline: 2px solid #d6762b;
+  outline-offset: 6px;
+}
+
+.rest-image-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.rest-instruction {
+  margin: 1rem 0 0;
+  color: #7f756b;
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+
+.rest-overlay {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  padding: 2rem;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  background: #000;
+  transition: opacity 2s ease;
+}
+
+.rest-overlay.is-resting { opacity: 1; }
+
+.rest-overlay p {
+  max-width: 780px;
+  margin: 0;
+  color: #d8d0c4;
+  font-family: Georgia, serif;
+  font-size: clamp(19px, 3vw, 30px);
+  line-height: 1.65;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 1.2s ease .8s, transform 1.2s ease .8s;
+}
+
+.rest-overlay.is-resting p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.spark-field {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fire-spark {
+  position: fixed;
+  left: var(--spark-x);
+  top: var(--spark-y);
+  width: var(--spark-size);
+  height: calc(var(--spark-size) * 2.4);
+  border-radius: 50%;
+  opacity: 0;
+  background: #ffd36a;
+  box-shadow: 0 0 7px #ff9a2e, 0 0 14px #e63b12;
+  transform: translate(-50%, -50%);
+  animation: spark-flight var(--spark-duration) cubic-bezier(.2, .75, .25, 1) forwards;
+}
+
+@keyframes spark-flight {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(.4) rotate(0deg);
+  }
+  12% { opacity: 1; }
+  70% { opacity: .9; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--spark-drift)), calc(-50% + var(--spark-rise))) scale(.05) rotate(var(--spark-turn));
+  }
+}
+
+.rest-source {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  color: #5d554e;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .rest-scene { width: calc(100vw - 2rem); }
+  .rest-instruction { font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rest-overlay,
+  .rest-overlay p { transition-duration: .01ms; transition-delay: 0s; }
+  .fire-spark { animation-duration: .35s; }
+}
