@@ -213,6 +213,7 @@
 .podium-medal { display: block; margin-bottom: .85rem; font-size: 22px; }
 .podium-place strong { display: block; margin-bottom: .35rem; }
 .podium-waiting { color: var(--swiss-danger); }
+.swiss-final-actions { margin: 1.25rem 0 2rem; }
 .tiebreak-phase { margin: 1.5rem 0 2.5rem; padding-left: 1rem; border-left: 3px solid var(--accent); }
 
 .swiss-dialog {
